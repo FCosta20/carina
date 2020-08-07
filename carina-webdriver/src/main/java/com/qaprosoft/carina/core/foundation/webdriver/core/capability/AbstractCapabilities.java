@@ -237,6 +237,13 @@ public abstract class AbstractCapabilities {
         if (!mobileEmulation.isEmpty()) {
             options.setExperimentalOption("mobileEmulation", mobileEmulation);
         }
+
+        if (Configuration.getBoolean(Parameter.HEADLESS_MODE)) {
+            options.addArguments("--headless");
+            if (caps.getPlatform().is(Platform.WINDOWS)) {
+                options.addArguments("--disable-gpu");
+            }
+        }
         
         caps.setCapability(ChromeOptions.CAPABILITY, options);
         return caps;
@@ -246,7 +253,6 @@ public abstract class AbstractCapabilities {
     private DesiredCapabilities addFirefoxOptions(DesiredCapabilities caps) {
         FirefoxProfile profile = getDefaultFirefoxProfile();
         FirefoxOptions options = new FirefoxOptions().setProfile(profile);
-        caps.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
 
         // add all custom firefox args
         for (String arg : Configuration.get(Parameter.FIREFOX_ARGS).split(",")) {
@@ -271,6 +277,12 @@ public abstract class AbstractCapabilities {
                 options.addPreference(name, value);
             }
         }
+
+        if (Configuration.getBoolean(Parameter.HEADLESS_MODE)) {
+            options.setHeadless(true);
+        }
+
+        caps.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
 
         return caps;
     }
