@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.qaprosoft.carina.core.foundation.utils.mobile.IMobileUtils;
 import org.apache.log4j.Logger;
 
 import com.qaprosoft.carina.core.foundation.utils.android.DeviceTimeZone.TimeFormat;
@@ -37,6 +38,7 @@ import com.qaprosoft.carina.core.gui.mobile.devices.android.phone.pages.settings
 import com.qaprosoft.carina.core.gui.mobile.devices.android.phone.pages.tzchanger.TZChangerPage;
 
 import io.appium.java_client.android.AndroidDriver;
+import org.springframework.data.annotation.Id;
 
 public class AndroidService implements IDriverPool, IAndroidUtils {
 
@@ -436,7 +438,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
     public boolean findExpectedNotification(String expectedTitle, String expectedText, boolean partially) {
         // open notification
         try {
-            ((AndroidDriver) castDriver()).openNotifications();
+            ((AndroidDriver) IMobileUtils.castDriver()).openNotifications();
             CommonUtils.pause(2); // wait while notifications are playing animation to
             // appear to avoid missed taps
         } catch (Exception e) {
@@ -446,7 +448,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
 
         }
 
-        NotificationPage nativeNotificationPage = new NotificationPage(getDriver());
+        NotificationPage nativeNotificationPage = new NotificationPage(IDriverPool.getDriver());
 
         LOGGER.info("Native notification page is loaded: " + nativeNotificationPage.isNativeNotificationPage());
 
@@ -496,7 +498,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
      */
     public void clearNotifications() {
         LOGGER.info("Clear notifications");
-        NotificationPage notificationPage = new NotificationPage(getDriver());
+        NotificationPage notificationPage = new NotificationPage(IDriverPool.getDriver());
         int attempts = 3;
         boolean isStatusBarOpened;
         // three attempts will be executed to clear notifications
@@ -509,8 +511,8 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
                 LOGGER.info(String.format("Status bar isn't opened after %d seconds. One more attempt.", (int) INIT_TIMEOUT));
                 expandStatusBar();
             }
-            LOGGER.debug("Page source [expand status bar]: ".concat(getDriver().getPageSource()));
-            Screenshot.captureByRule(getDriver(), "Clear notification - screenshot. Status bar should be opened. Attempt: " + i);
+            LOGGER.debug("Page source [expand status bar]: ".concat(IDriverPool.getDriver().getPageSource()));
+            Screenshot.captureByRule(IDriverPool.getDriver(), "Clear notification - screenshot. Status bar should be opened. Attempt: " + i);
             try {
                 notificationPage.clearNotifications();
             } catch (Exception e) {
@@ -526,7 +528,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
      * @return boolean
      */
     public boolean isStatusBarExpanded() {
-        NotificationPage notificationPage = new NotificationPage(getDriver());
+        NotificationPage notificationPage = new NotificationPage(IDriverPool.getDriver());
         return notificationPage.isStatusBarExpanded();
     }
 
@@ -552,7 +554,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
      * @return boolean return true if everything is ok.
      */
     public boolean setFakeGPSLocation(String location, boolean restartApk) {
-        getDriver();
+        IDriverPool.getDriver();
         boolean res = false;
         installApk(FAKE_GPS_APP_PATH, true);
 
@@ -561,7 +563,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
         try {
             forceFakeGPSApkOpen();
 
-            FakeGpsPage fakeGpsPage = new FakeGpsPage(getDriver());
+            FakeGpsPage fakeGpsPage = new FakeGpsPage(IDriverPool.getDriver());
             if (!fakeGpsPage.isOpened(1)) {
                 LOGGER.error("Fake GPS application should be open but wasn't. Force opening.");
                 openApp(activity);
@@ -598,14 +600,14 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
      * @return boolean
      */
     public boolean stopFakeGPS(boolean restartApk) {
-        getDriver();
+        IDriverPool.getDriver();
         boolean res = false;
         String activity = FAKE_GPS_APP_ACTIVITY;
 
         try {
             forceFakeGPSApkOpen();
 
-            FakeGpsPage fakeGpsPage = new FakeGpsPage(getDriver());
+            FakeGpsPage fakeGpsPage = new FakeGpsPage(IDriverPool.getDriver());
             if (!fakeGpsPage.isOpened(1)) {
                 LOGGER.error("Fake GPS application should be open but wasn't. Force opening.");
                 openApp(activity);
@@ -707,7 +709,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
      */
     public DeviceTimeZone getDeviceTimeZone(String defaultTZ) {
 
-        getDriver(); // start driver in before class to assign it for particular
+        IDriverPool.getDriver(); // start driver in before class to assign it for particular
                      // thread
         DeviceTimeZone dt = new DeviceTimeZone();
 
@@ -810,7 +812,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
     public boolean setDeviceTimeZone(String timeZone, String settingsTZ, TimeFormat timeFormat, String gmtStamp, ChangeTimeZoneWorkflow workflow) {
         boolean changed = false;
 
-        getDriver(); // start driver in before class to assign it for particular
+        IDriverPool.getDriver(); // start driver in before class to assign it for particular
                      // thread
         String actualTZ = getDeviceActualTimeZone();
 
@@ -979,7 +981,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
             } else {
                 LOGGER.error("Not on '.Settings$DateTimeSettingsActivity' page");
             }
-            DateTimeSettingsPage dtSettingsPage = new DateTimeSettingsPage(getDriver());
+            DateTimeSettingsPage dtSettingsPage = new DateTimeSettingsPage(IDriverPool.getDriver());
             if (!dtSettingsPage.isOpened()) {
                 openDateTimeSettingsSetupWizard(true, timeFormat);
             }
@@ -1017,7 +1019,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
         try {
             forceTZChangingApkOpen(true, timeFormat);
 
-            TZChangerPage tzChangerPage = new TZChangerPage(getDriver());
+            TZChangerPage tzChangerPage = new TZChangerPage(IDriverPool.getDriver());
 
             if (tzChangerPage.isOpened(3)) {
                 LOGGER.info("TimeZone changer main page was open.");
@@ -1091,7 +1093,7 @@ public class AndroidService implements IDriverPool, IAndroidUtils {
             openTZChangingApk(turnOffAuto, timeFormat);
         }
 
-        TZChangerPage tzChangerPage = new TZChangerPage(getDriver());
+        TZChangerPage tzChangerPage = new TZChangerPage(IDriverPool.getDriver());
         if (!tzChangerPage.isOpened(10)) {
             openTZChangingApk(turnOffAuto, timeFormat);
         }

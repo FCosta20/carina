@@ -80,7 +80,7 @@ public interface IDriverPool {
      * 
      * @return default WebDriver
      */
-    default public WebDriver getDriver() {
+    static public WebDriver getDriver() {
         return getDriver(DEFAULT);
     }
 
@@ -92,7 +92,7 @@ public interface IDriverPool {
      *            String driver name
      * @return WebDriver
      */
-    default public WebDriver getDriver(String name) {
+    static public WebDriver getDriver(String name) {
         return getDriver(name, null, null);
     }
 
@@ -105,7 +105,7 @@ public interface IDriverPool {
      *            DesiredCapabilities capabilities
      * @return WebDriver
      */
-    default public WebDriver getDriver(String name, DesiredCapabilities capabilities) {
+    static public WebDriver getDriver(String name, DesiredCapabilities capabilities) {
         return getDriver(name, capabilities, null);
     }
 
@@ -121,7 +121,7 @@ public interface IDriverPool {
      *            String
      * @return WebDriver
      */
-    default public WebDriver getDriver(String name, DesiredCapabilities capabilities, String seleniumHost) {
+    static public WebDriver getDriver(String name, DesiredCapabilities capabilities, String seleniumHost) {
         WebDriver drv = null;
 
         ConcurrentHashMap<String, CarinaDriver> currentDrivers = getDrivers();
@@ -471,7 +471,7 @@ public interface IDriverPool {
      *            String
      * @return WebDriver
      */
-    default WebDriver createDriver(String name, DesiredCapabilities capabilities, String seleniumHost) {
+    static WebDriver createDriver(String name, DesiredCapabilities capabilities, String seleniumHost) {
         // TODO: make current method as private after migrating to java 9+
         int count = 0;
         WebDriver drv = null;
@@ -605,7 +605,7 @@ public interface IDriverPool {
      * @return ConcurrentHashMap of driver names and Carina WebDrivers
      * 
      */
-    default ConcurrentHashMap<String, CarinaDriver> getDrivers() {
+    static ConcurrentHashMap<String, CarinaDriver> getDrivers() {
         Long threadId = Thread.currentThread().getId();
         ConcurrentHashMap<String, CarinaDriver> currentDrivers = new ConcurrentHashMap<String, CarinaDriver>();
         for (CarinaDriver carinaDriver : driversPool) {

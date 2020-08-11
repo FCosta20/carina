@@ -804,7 +804,7 @@ public class CarinaListener extends AbstractTestListener implements ISuiteListen
     private String takeScreenshot(ITestResult result, String msg) {
         String screenId = "";
 
-        ConcurrentHashMap<String, CarinaDriver> drivers = getDrivers();
+        ConcurrentHashMap<String, CarinaDriver> drivers = IDriverPool.getDrivers();
 
         try {
             for (Map.Entry<String, CarinaDriver> entry : drivers.entrySet()) {

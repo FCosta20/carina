@@ -17,6 +17,7 @@ package com.qaprosoft.carina.core.gui.mobile.devices.android.phone.pages.notific
 
 import java.util.List;
 
+import com.qaprosoft.carina.core.foundation.utils.mobile.IMobileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -27,7 +28,6 @@ import org.apache.log4j.Logger;
 
 import com.qaprosoft.carina.core.foundation.utils.android.AndroidService;
 import com.qaprosoft.carina.core.foundation.utils.factory.DeviceType;
-import com.qaprosoft.carina.core.foundation.utils.mobile.MobileUtils;
 import com.qaprosoft.carina.core.foundation.utils.mobile.notifications.android.Notification;
 import com.qaprosoft.carina.core.foundation.webdriver.IDriverPool;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
@@ -219,7 +219,7 @@ public class NotificationPage extends MobileAbstractPage {
                 x1 = point.x + dim.width / 6;
                 x2 = point.x + dim.width * 5 / 6;
                 y1 = y2 = point.y + dim.height / 2;
-                MobileUtils.swipe(x1, y1, x2, y2, SWIPE_DURATION);
+                IMobileUtils.swipe(x1, y1, x2, y2, SWIPE_DURATION);
             }
         }
     }

@@ -17,6 +17,7 @@ package com.qaprosoft.carina.core.foundation.utils.mobile;
 
 import java.time.Duration;
 
+import com.qaprosoft.carina.core.foundation.utils.android.IAndroidUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -237,7 +238,7 @@ public interface IMobileUtils extends IDriverPool {
      *            int
      * @return boolean
      */
-    default public boolean swipe(ExtendedWebElement element, ExtendedWebElement container, int count) {
+    public static boolean swipe(ExtendedWebElement element, ExtendedWebElement container, int count) {
         return swipe(element, container, Direction.UP, count, DEFAULT_TOUCH_ACTION_DURATION);
     }
 
@@ -311,8 +312,8 @@ public interface IMobileUtils extends IDriverPool {
      *            pulling timeout, ms
      * @return boolean
      */
-    default public boolean swipe(ExtendedWebElement element, ExtendedWebElement container, Direction direction,
-            int count, int duration) {
+    public static boolean swipe(ExtendedWebElement element, ExtendedWebElement container, Direction direction,
+                                int count, int duration) {
 
         boolean isVisible = element.isVisible(1);
         if (isVisible) {
@@ -396,7 +397,7 @@ public interface IMobileUtils extends IDriverPool {
      * @param duration int Millis
      */
     @SuppressWarnings("rawtypes")
-    default public void swipe(int startx, int starty, int endx, int endy, int duration) {
+    public static void swipe(int startx, int starty, int endx, int endy, int duration) {
         UTILS_LOGGER.debug("Starting swipe...");
         WebDriver drv = castDriver();
 
@@ -439,7 +440,7 @@ public interface IMobileUtils extends IDriverPool {
      * @param duration int
      * @return boolean
      */
-    default public boolean swipeInContainer(ExtendedWebElement container, Direction direction, int duration) {
+    public static boolean swipeInContainer(ExtendedWebElement container, Direction direction, int duration) {
         return swipeInContainer(container, direction, DEFAULT_MIN_SWIPE_COUNT, duration);
     }
 
@@ -452,7 +453,7 @@ public interface IMobileUtils extends IDriverPool {
      * @param duration int
      * @return boolean
      */
-    default public boolean swipeInContainer(ExtendedWebElement container, Direction direction, int count, int duration) {
+    public static boolean swipeInContainer(ExtendedWebElement container, Direction direction, int count, int duration) {
 
         int startx = 0;
         int starty = 0;
@@ -842,8 +843,8 @@ public interface IMobileUtils extends IDriverPool {
      *
      * @return WebDriver
      */
-    default public WebDriver castDriver() {
-        WebDriver drv = getDriver();
+    static public WebDriver castDriver() {
+        WebDriver drv = IDriverPool.getDriver();
         if (drv instanceof EventFiringWebDriver) {
             drv = ((EventFiringWebDriver) drv).getWrappedDriver();
         }

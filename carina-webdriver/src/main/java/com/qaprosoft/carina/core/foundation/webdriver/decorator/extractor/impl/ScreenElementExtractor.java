@@ -31,7 +31,7 @@ public class ScreenElementExtractor extends AbstractElementExtractor implements 
     @Override
     public ExtendedWebElement getElementsByCoordinates(int x, int y) {
         String elementName = String.format("Element founded by x:%d - y:%d", x, y);
-        WebDriver driver = getDriver();
+        WebDriver driver = IDriverPool.getDriver();
         List<WebElement> elements = getEndLevelElements(driver);
         List<WebElement> result = new ArrayList<WebElement>();
         Rectangle rect;

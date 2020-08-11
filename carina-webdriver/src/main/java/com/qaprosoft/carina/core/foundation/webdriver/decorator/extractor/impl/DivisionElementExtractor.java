@@ -34,7 +34,7 @@ public class DivisionElementExtractor extends AbstractElementExtractor implement
     @Override
     public ExtendedWebElement getElementsByCoordinates(int x, int y) {
         String elementName = String.format("Element founded by x:%d - y:%d", x, y);
-        WebDriver driver = getDriver();
+        WebDriver driver = IDriverPool.getDriver();
         List<WebElement> elements = getEndLevelElements(driver);
         WebElement tempElement;
         int index = 0;

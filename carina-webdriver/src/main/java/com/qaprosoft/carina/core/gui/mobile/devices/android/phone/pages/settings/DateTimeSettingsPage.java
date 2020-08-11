@@ -15,12 +15,12 @@
  *******************************************************************************/
 package com.qaprosoft.carina.core.gui.mobile.devices.android.phone.pages.settings;
 
+import com.qaprosoft.carina.core.foundation.utils.android.IAndroidUtils;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.apache.log4j.Logger;
 
-import com.qaprosoft.carina.core.foundation.utils.android.AndroidUtils;
 import com.qaprosoft.carina.core.foundation.webdriver.IDriverPool;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.mobile.devices.MobileAbstractPage;
@@ -75,8 +75,8 @@ public class DateTimeSettingsPage extends MobileAbstractPage {
     public void openTimeZoneSetting() {
         boolean found = selectTimeZone.clickIfPresent(SHORT_TIMEOUT);
         if (!found) {
-            boolean scrolled = AndroidUtils.scroll(SELECT_TIME_ZONE_TEXT, scrollableContainerByClassName,
-                    AndroidUtils.SelectorType.CLASS_NAME, AndroidUtils.SelectorType.TEXT).isElementPresent();
+            boolean scrolled = IAndroidUtils.scroll(SELECT_TIME_ZONE_TEXT, scrollableContainerByClassName,
+                    IAndroidUtils.SelectorType.CLASS_NAME, IAndroidUtils.SelectorType.TEXT).isElementPresent();
             if (scrolled) {
                 found = selectTimeZone.clickIfPresent(SHORT_TIMEOUT);
             } else {
@@ -153,16 +153,16 @@ public class DateTimeSettingsPage extends MobileAbstractPage {
 
         if (deviceOsVersion > 8) {
             try {
-                result = AndroidUtils.scroll(tzGMT, scrollableContainerInVersion8_1,
-                        AndroidUtils.SelectorType.ID, AndroidUtils.SelectorType.TEXT_CONTAINS).isElementPresent();
+                result = IAndroidUtils.scroll(tzGMT, scrollableContainerInVersion8_1,
+                        IAndroidUtils.SelectorType.ID, IAndroidUtils.SelectorType.TEXT_CONTAINS).isElementPresent();
             } catch (NoSuchElementException e){
                 e.printStackTrace();
                 result = false;
             }
         } else {
             try {
-                result = AndroidUtils.scroll(tzGMT, scrollableContainerByClassName,
-                        AndroidUtils.SelectorType.CLASS_NAME, AndroidUtils.SelectorType.TEXT_CONTAINS).isElementPresent();
+                result = IAndroidUtils.scroll(tzGMT, scrollableContainerByClassName,
+                        IAndroidUtils.SelectorType.CLASS_NAME, IAndroidUtils.SelectorType.TEXT_CONTAINS).isElementPresent();
             } catch (NoSuchElementException e){
                 e.printStackTrace();
                 result = false;
@@ -185,16 +185,16 @@ public class DateTimeSettingsPage extends MobileAbstractPage {
 
         if (deviceOsVersion > 8) {
             try {
-                result = AndroidUtils.scroll(tz, scrollableContainerInVersion8_1,
-                        AndroidUtils.SelectorType.ID, AndroidUtils.SelectorType.TEXT_CONTAINS).isElementPresent();
+                result = IAndroidUtils.scroll(tz, scrollableContainerInVersion8_1,
+                        IAndroidUtils.SelectorType.ID, IAndroidUtils.SelectorType.TEXT_CONTAINS).isElementPresent();
             } catch (NoSuchElementException e){
                 e.printStackTrace();
                 result = false;
             }
         } else {
             try {
-                result = AndroidUtils.scroll(tz, scrollableContainerByClassName,
-                        AndroidUtils.SelectorType.CLASS_NAME, AndroidUtils.SelectorType.TEXT_CONTAINS).isElementPresent();
+                result = IAndroidUtils.scroll(tz, scrollableContainerByClassName,
+                        IAndroidUtils.SelectorType.CLASS_NAME, IAndroidUtils.SelectorType.TEXT_CONTAINS).isElementPresent();
             } catch (NoSuchElementException e){
                 e.printStackTrace();
                 result = false;

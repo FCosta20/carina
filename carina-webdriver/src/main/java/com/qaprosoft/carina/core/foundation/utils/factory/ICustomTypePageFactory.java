@@ -35,7 +35,7 @@ public interface ICustomTypePageFactory extends IDriverPool {
     Reflections REFLECTIONS = new Reflections("");
 
     public default <T extends AbstractPage> T initPage(Class<T> parentClass, Object... parameters) {
-        return initPage(getDriver(), parentClass, parameters);
+        return initPage(IDriverPool.getDriver(), parentClass, parameters);
     }
 
     public default <T extends AbstractPage> T initPage(WebDriver driver, Class<T> parentClass, Object... parameters) {

@@ -15,7 +15,7 @@ public interface IRemoteControllerAppleTV extends IDriverPool {
 	 * @param controlKeyword RemoteControlKeyword
 	 */
 	default public void remoteControlAction(RemoteControlKeyword controlKeyword) {
-		((JavascriptExecutor) getDriver()).executeScript("mobile: pressButton", ImmutableMap.of("name", controlKeyword.getControlKeyword()));
+		((JavascriptExecutor) IDriverPool.getDriver()).executeScript("mobile: pressButton", ImmutableMap.of("name", controlKeyword.getControlKeyword()));
 		RC_LOGGER.info(String.format("TV OS RemoteController '%s' clicked", controlKeyword.name()));
 	}
 

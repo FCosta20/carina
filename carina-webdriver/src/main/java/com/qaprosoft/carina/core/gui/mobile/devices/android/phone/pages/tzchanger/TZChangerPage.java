@@ -15,11 +15,11 @@
  *******************************************************************************/
 package com.qaprosoft.carina.core.gui.mobile.devices.android.phone.pages.tzchanger;
 
+import com.qaprosoft.carina.core.foundation.utils.mobile.IMobileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 
-import com.qaprosoft.carina.core.foundation.utils.mobile.MobileUtils;
 import com.qaprosoft.carina.core.foundation.webdriver.decorator.ExtendedWebElement;
 import com.qaprosoft.carina.core.gui.mobile.devices.MobileAbstractPage;
 
@@ -69,13 +69,13 @@ public class TZChangerPage extends MobileAbstractPage {
         LOGGER.info("Searching for tz: " + tz);
         if (scrollableContainer.isElementPresent(SHORT_TIMEOUT)) {
             LOGGER.info("Scrollable container present.");
-            boolean scrolled = MobileUtils.swipe(
+            boolean scrolled = IMobileUtils.swipe(
             		tzSelectionBase.format(tz),
                     scrollableContainer, defaultSwipeTime);
             if (!scrolled) {
                 LOGGER.info("Probably we have long list. Let's increase swipe attempts.");
                 defaultSwipeTime = 50;
-                scrolled = MobileUtils.swipe(
+                scrolled = IMobileUtils.swipe(
                 		tzSelectionBase.format(tz),
                         scrollableContainer, defaultSwipeTime);
             }
@@ -85,7 +85,7 @@ public class TZChangerPage extends MobileAbstractPage {
                 tzSelectionBase.format(tz).click();
 
                 LOGGER.info("Searching for " + timezone);
-                scrolled = MobileUtils.swipe(
+                scrolled = IMobileUtils.swipe(
                 		tzSelectionBase.format(timezone),
                         scrollableContainer, defaultSwipeTime);
                 if (scrolled) {
@@ -96,7 +96,7 @@ public class TZChangerPage extends MobileAbstractPage {
                 } else {
                     LOGGER.error("Did not find timezone by timezone text: " + timezone);
                     defaultSwipeTime = 30;
-                    scrolled = MobileUtils.swipe(
+                    scrolled = IMobileUtils.swipe(
                     		tzSelectionBase.format(timezone),
                             scrollableContainer, defaultSwipeTime);
                     if (scrolled) {

@@ -88,12 +88,12 @@ public interface IAndroidUtils extends IMobileUtils {
     static final String SHELL_RECENT_APPS_CMD = "input keyevent KEYCODE_APP_SWITCH";
 
     default public void pressKeyboardKey(AndroidKey key) {
-        ((AndroidDriver<?>) castDriver()).pressKey(new KeyEvent(key).withFlag(KeyEventFlag.SOFT_KEYBOARD)
+        ((AndroidDriver<?>) IMobileUtils.castDriver()).pressKey(new KeyEvent(key).withFlag(KeyEventFlag.SOFT_KEYBOARD)
                 .withFlag(KeyEventFlag.KEEP_TOUCH_MODE).withFlag(KeyEventFlag.EDITOR_ACTION));
     }
 
     default public void pressBack() {
-        ((AndroidDriver<?>) castDriver()).pressKey(new KeyEvent(AndroidKey.BACK));
+        ((AndroidDriver<?>) IMobileUtils.castDriver()).pressKey(new KeyEvent(AndroidKey.BACK));
     }
 
     /**
@@ -123,14 +123,14 @@ public interface IAndroidUtils extends IMobileUtils {
      */
     @SuppressWarnings("rawtypes")
     default public void pressBottomRightKey() {
-        WebDriver driver = castDriver();
+        WebDriver driver = IMobileUtils.castDriver();
         Dimension size = helper.performIgnoreException(() -> driver.manage().window().getSize());
         int height = size.getHeight();
         int width = size.getWidth();
 
         PointOption<?> option = PointOption.point(Double.valueOf(width * 0.915).intValue(),
                 Double.valueOf(height * 0.945).intValue());
-        new TouchAction((AndroidDriver<?>) castDriver()).tap(option).perform();
+        new TouchAction((AndroidDriver<?>) IMobileUtils.castDriver()).tap(option).perform();
     }
 
     // Change Device Language section
@@ -399,7 +399,7 @@ public interface IAndroidUtils extends IMobileUtils {
         ExtendedWebElement extendedWebElement = null;
         long startTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
         // TODO: support multi threaded WebDriver's removing DriverPool usage
-        WebDriver drv = castDriver();
+        WebDriver drv = IMobileUtils.castDriver();
 
         // workaorund for appium issue: https://github.com/appium/appium/issues/10159
         if (scrollToEle.contains(",")) {
@@ -470,7 +470,7 @@ public interface IAndroidUtils extends IMobileUtils {
         ExtendedWebElement extendedWebElement = null;
         long startTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
         // TODO: support multi threaded WebDriver's removing DriverPool usage
-        WebDriver drv = castDriver();
+        WebDriver drv = IMobileUtils.castDriver();
 
         // workaorund for appium issue: https://github.com/appium/appium/issues/10159
         if (scrollToEle.contains(",")) {
@@ -532,12 +532,12 @@ public interface IAndroidUtils extends IMobileUtils {
      *         AndroidUtils.SelectorType.CLASS_NAME,
      *         AndroidUtils.SelectorType.TEXT);
      **/
-    default public ExtendedWebElement scroll(String scrollToEle, ExtendedWebElement scrollableContainer,
-            SelectorType containerSelectorType, SelectorType eleSelectorType) {
+    public static ExtendedWebElement scroll(String scrollToEle, ExtendedWebElement scrollableContainer,
+                                            SelectorType containerSelectorType, SelectorType eleSelectorType) {
         ExtendedWebElement extendedWebElement = null;
         long startTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
         // TODO: support multi threaded WebDriver's removing DriverPool usage
-        WebDriver drv = castDriver();
+        WebDriver drv = IMobileUtils.castDriver();
 
         // workaorund for appium issue: https://github.com/appium/appium/issues/10159
         if (scrollToEle.contains(",")) {
@@ -587,7 +587,7 @@ public interface IAndroidUtils extends IMobileUtils {
      * @return scrollViewContainerFinder String
      *
      **/
-    default String getScrollContainerSelector(ExtendedWebElement scrollableContainer,
+    static String getScrollContainerSelector(ExtendedWebElement scrollableContainer,
             SelectorType containerSelectorType) {
         UTILS_LOGGER.debug(scrollableContainer.getBy().toString());
         String scrollableContainerBy;
@@ -641,7 +641,7 @@ public interface IAndroidUtils extends IMobileUtils {
      *            - Selector type: has to be id, text, contentDesc or className
      * @return String
      **/
-    default String getScrollToElementSelector(String scrollToEle, SelectorType eleSelectorType) {
+    static String getScrollToElementSelector(String scrollToEle, SelectorType eleSelectorType) {
         String neededElementFinder = "";
         String scrollToEleTrimmed;
 
@@ -683,7 +683,7 @@ public interface IAndroidUtils extends IMobileUtils {
      * @param startTime
      *            - Long initial time for timeout count down
      **/
-    default public void checkTimeout(long startTime) {
+    public static void checkTimeout(long startTime) {
         long elapsed = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) - startTime;
 
         if (elapsed > SCROLL_TIMEOUT) {
@@ -776,7 +776,7 @@ public interface IAndroidUtils extends IMobileUtils {
         String commadKeyWord = commands.get(0);
         List<String> args = commands.subList(1, commands.size());
         Map<String, Object> preparedCommand = ImmutableMap.of("command", commadKeyWord, "args", args);
-        String output = (String) ((AppiumDriver<?>) castDriver()).executeScript(SHELL_INIT_CONSOLE, preparedCommand);
+        String output = (String) ((AppiumDriver<?>) IMobileUtils.castDriver()).executeScript(SHELL_INIT_CONSOLE, preparedCommand);
         if (!StringUtils.isEmpty(output)) {
             UTILS_LOGGER.debug("ADB command output: " + output);
         }
@@ -801,7 +801,7 @@ public interface IAndroidUtils extends IMobileUtils {
      */
     default public void closeApp() {
         UTILS_LOGGER.info("Application will be closed to background");
-        ((AndroidDriver<?>) castDriver()).closeApp();
+        ((AndroidDriver<?>) IMobileUtils.castDriver()).closeApp();
     }
 
     /**
@@ -898,7 +898,7 @@ public interface IAndroidUtils extends IMobileUtils {
      */
     default public void clearAppCache() {
         UTILS_LOGGER.info("Initiation application reset...");
-        ((AndroidDriver<?>) castDriver()).resetApp();
+        ((AndroidDriver<?>) IMobileUtils.castDriver()).resetApp();
     }
 
     /**
@@ -935,7 +935,7 @@ public interface IAndroidUtils extends IMobileUtils {
      * @return boolean
      */
     default public boolean isApplicationInstalled(String packageName) {
-        boolean installed = ((AndroidDriver<?>) castDriver()).isAppInstalled(packageName);
+        boolean installed = ((AndroidDriver<?>) IMobileUtils.castDriver()).isAppInstalled(packageName);
         UTILS_LOGGER.info(String.format("Application by package name (%s) installed: ", packageName) + installed);
         return installed;
     }
@@ -952,7 +952,7 @@ public interface IAndroidUtils extends IMobileUtils {
      */
     default public void startApp(String packageName) {
         UTILS_LOGGER.info("Starting " + packageName);
-        ((AndroidDriver<?>) castDriver()).activateApp(packageName);
+        ((AndroidDriver<?>) IMobileUtils.castDriver()).activateApp(packageName);
     }
 
     /**
@@ -962,7 +962,7 @@ public interface IAndroidUtils extends IMobileUtils {
      */
     default public void installApp(String apkPath) {
         UTILS_LOGGER.info("Will install application with apk-file from " + apkPath);
-        ((AndroidDriver<?>) castDriver()).installApp(apkPath);
+        ((AndroidDriver<?>) IMobileUtils.castDriver()).installApp(apkPath);
     }
 
     /**
@@ -973,7 +973,7 @@ public interface IAndroidUtils extends IMobileUtils {
      * @return true if succeed
      */
     default public boolean removeApp(String packageName) {
-        boolean removed = ((AndroidDriver<?>) castDriver()).removeApp(packageName);
+        boolean removed = ((AndroidDriver<?>) IMobileUtils.castDriver()).removeApp(packageName);
         UTILS_LOGGER.info(String.format("Application (%s) is successfuly removed: ", packageName) + removed);
         return removed;
     }
@@ -1007,7 +1007,7 @@ public interface IAndroidUtils extends IMobileUtils {
     default public void triggerDeeplink(String link, String packageName) {
         Map<String, Object> preparedCommand = ImmutableMap.of("url", link, "package", packageName);
         try {
-            ((AppiumDriver<?>) castDriver()).executeScript(SHELL_INIT_DEEPLINK_CONSOLE, preparedCommand);
+            ((AppiumDriver<?>) IMobileUtils.castDriver()).executeScript(SHELL_INIT_DEEPLINK_CONSOLE, preparedCommand);
         } catch (WebDriverException wde) {
             // TODO: need to pay attention
             UTILS_LOGGER.warn("org.openqa.selenium.WebDriverException is caught and ignored.");
@@ -1024,7 +1024,7 @@ public interface IAndroidUtils extends IMobileUtils {
     @SuppressWarnings("unchecked")
     default public ArrayList<String> getAppPermissions(String packageName, PermissionType type) {
         Map<String, Object> preparedCommand = ImmutableMap.of("type", type.getType(), "package", packageName);
-        return (ArrayList<String>) ((AppiumDriver<?>) castDriver()).executeScript(SHELL_INIT_GET_PERMISSION_CONSOLE,
+        return (ArrayList<String>) ((AppiumDriver<?>) IMobileUtils.castDriver()).executeScript(SHELL_INIT_GET_PERMISSION_CONSOLE,
                 preparedCommand);
     }
 
@@ -1040,7 +1040,7 @@ public interface IAndroidUtils extends IMobileUtils {
         Arrays.asList(permissions).forEach(p -> permissionsStr.add(p.getPermission()));
         Map<String, Object> preparedCommand = ImmutableMap.of("action", action.getAction(), "appPackage", packageName,
                 "permissions", permissionsStr);
-        ((AppiumDriver<?>) castDriver()).executeScript(SHELL_INIT_CHANGE_PERMISSION_CONSOLE, preparedCommand);
+        ((AppiumDriver<?>) IMobileUtils.castDriver()).executeScript(SHELL_INIT_CHANGE_PERMISSION_CONSOLE, preparedCommand);
     }
 
     /**
@@ -1066,7 +1066,7 @@ public interface IAndroidUtils extends IMobileUtils {
     }
     
     default public boolean isWifiEnabled() {
-        boolean enabled = ((AndroidDriver<?>) castDriver()).getConnection().isWiFiEnabled();
+        boolean enabled = ((AndroidDriver<?>) IMobileUtils.castDriver()).getConnection().isWiFiEnabled();
         UTILS_LOGGER.info("Wi-Fi enabled: " + enabled);
         return enabled;
     }
@@ -1074,7 +1074,7 @@ public interface IAndroidUtils extends IMobileUtils {
     default public void enableWifi() {
         boolean enabled = isWifiEnabled();
         if (!enabled) {
-            ((AndroidDriver<?>) castDriver()).toggleWifi();
+            ((AndroidDriver<?>) IMobileUtils.castDriver()).toggleWifi();
             return;
         }
         UTILS_LOGGER.info("Wifi is already anebled. No actions needed");
@@ -1083,7 +1083,7 @@ public interface IAndroidUtils extends IMobileUtils {
     default public void disableWifi() {
         boolean enabled = isWifiEnabled();
         if (enabled) {
-            ((AndroidDriver<?>) castDriver()).toggleWifi();
+            ((AndroidDriver<?>) IMobileUtils.castDriver()).toggleWifi();
             return;
         }
         UTILS_LOGGER.info("Wifi is already disabled. No actions needed");

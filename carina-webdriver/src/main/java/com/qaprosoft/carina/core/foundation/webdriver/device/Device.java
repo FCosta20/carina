@@ -566,7 +566,7 @@ public class Device extends RemoteDevice implements IDriverPool {
 			return null;
 		}
         
-        if (getDrivers().size() == 0) {
+        if (IDriverPool.getDrivers().size() == 0) {
             LOGGER.debug("There is no active drivers in the pool.");
             return null;
         }
@@ -575,7 +575,7 @@ public class Device extends RemoteDevice implements IDriverPool {
         
         try {
             LOGGER.debug("UI dump generation...");
-            WebDriver driver = getDriver();
+            WebDriver driver = IDriverPool.getDriver();
             String fileName = ReportContext.getTestDir() + String.format("/%s.uix", screenshotName.replace(".png", ""));
             String pageSource = driver.getPageSource();
             pageSource = pageSource.replaceAll(SpecialKeywords.ANDROID_START_NODE, SpecialKeywords.ANDROID_START_UIX_NODE).
